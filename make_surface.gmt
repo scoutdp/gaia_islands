@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# From the DEM in QGIS:
+rgn='-R179095/310445/2093085/2243765'
+#xmin, xmax, ymin, ymax
+scl=-JX5i
+zmax=13781
+pts='./biasciicopy.txt'
+res='5'
+outsurf='./bi_more_init_topo' #<--- this is what you want
+out='surf_plot'
+
+echo "making new points..."
+dos2unix $pts
+awk -F ',' '{print $1, $2, $3}' $pts
+
+echo "making new surface..."
+# Grid table data using adjustable tension continuous curvature splines
+
+gmt surface $pts $rgn -G${outsurf}.nc -I$res+e/$res+e  -T1 -V  #<-- T0.8, res=20 is a good surface! 
+
